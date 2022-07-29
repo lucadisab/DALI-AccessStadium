@@ -1,0 +1,22 @@
+:- set_prolog_flag(double_quotes, chars).
+:- use_module(library(double_quotes)).
+:- dynamic (condizione_bigliettaio/1).
+:- assert(condizione_bigliettaio(true)).
+
+condizione_bigliettaio :- write('').
+
+condizione_bigliettaioI :-
+	condizione_bigliettaio(X),
+	true==X,
+	vendi_bigliettoA.
+
+vendi_bigliettoA:- 
+	write('Attendo agenti'),nl.
+
+richiesta_acquistoE(Id_agente):>  
+	number_chars(Id_agente, Char),
+	atom_chars(Id_agenteString, Char),
+	atom_concat('agent', Id_agenteString, X), 
+	messageA(X,send_message(biglietto_acquistato,Me)),
+	format('Sto vendendo il biglietto all agente ~d', Id_agente),
+	nl.

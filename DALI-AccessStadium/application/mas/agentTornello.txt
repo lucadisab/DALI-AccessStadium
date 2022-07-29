@@ -1,0 +1,51 @@
+:- use_module(library(strings)).
+:- use_module(library(apply)).
+:- use_module(library(lists)).
+:- dynamic (condizione_tornello/1).
+:- dynamic (ordine_agente/2).
+:- assert(condizione_tornello(true)).
+
+condizione_tornello :- write('').
+condizione_tornelloI :-
+	condizione_tornello(X),
+	true==X,
+	libera_tornelloA.
+
+libera_tornelloA:- 
+	write('Attendo agenti'),nl.
+
+/* Arrivo Agente con il biglietto */
+
+richiesta_ingressoE(Id,Priorita) :>
+	write('Agente arrivato al tornello'),
+	nl,
+	now(Timestamp),
+	assert(ordine_agente(Id,Priorita,Timestamp)), fai_entrareA.
+
+fai_entrareA:- 
+	ordine_agente(Id,Priorita,Timestamp),
+	write('Primo controllo priorita'),
+	nl,
+	Priorita==0 ->  
+	ordine_agente(Id,Priorita,Timestamp),
+	not((ordine_agente(_,Priorita,Timestamp2), Timestamp2<Timestamp)),
+	number_chars(Id, Char),
+	atom_chars(IdString, Char),
+	atom_concat('agent', IdString, X),
+	write(X), 
+	nl,
+	messageA(X,send_message(accedi_allo_stadio,Me)),
+	format('messaggio mandato priorita 0 a agente ~d', Id);
+	nl, 
+	ordine_agente(Id,Priorita,Timestamp),
+	not((ordine_agente(_,Priorita,Timestamp2), Timestamp2<Timestamp)),
+	number_chars(Id, Char),
+	atom_chars(IdString, Char),
+	atom_concat('agent', IdString, X), 
+	messageA(X,send_message(accedi_allo_stadio,Me)),
+	write('messaggio mandato priorita 1').
+	
+	
+
+entratoE(Id,Priorita):> 
+	retract(ordine_agente(Id, Priorita,_)).

@@ -1,0 +1,2 @@
+send_message(send_message(biglietto_acquistato,_255771))
+send_message(send_message(biglietto_acquistato,_219075))

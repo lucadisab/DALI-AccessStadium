@@ -1,0 +1,4 @@
+send_message(send_message(sveglia,_243219))
+send_message(send_message(richiesta_acquisto(1),_274343))
+send_message(send_message(richiesta_ingresso(1,1),_269617))
+send_message(send_message(entrato(1,1),_257721))

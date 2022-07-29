@@ -1,0 +1,2 @@
+send_message(send_message(richiesta_ingresso(4,0),_238035))
+send_message(send_message(entrato(4,0),_252251))

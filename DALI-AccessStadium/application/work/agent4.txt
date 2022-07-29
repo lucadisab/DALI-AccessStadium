@@ -1,0 +1,36 @@
+:- dynamic (biglietto_comprato/1).
+:- dynamic (informazioni_agente/2).
+:- assert(biglietto_comprato(true)).
+
+:-assert(informazioni_agente(4,0)).
+
+svegliaE :> vai_tornelloA.
+
+vai_tornelloA :- 
+	biglietto_comprato(X), 
+	true==X ->
+	write('Ho il biglietto'),
+	nl,
+	messageA(agentTornello, send_message(richiesta_ingresso(4, 0),Me));
+	write('Non ho il biglietto, lo compro'),
+	nl,
+	compra_bigliettoA.
+
+compra_bigliettoA:> 
+	messageA(agentBigliettaio, send_message(richiesta_acquisto(4),Me)), write('Sto comprando il biglietto').
+
+biglietto_acquistatoE:> 
+	write('Ho acquistato il biglietto'),
+	nl,
+	biglietto_comprato(X),
+	retract(biglietto_comprato(X)),
+	assert(biglietto_comprato(true)),
+	vai_tornelloA.
+
+accedi_allo_stadioE:> 
+	informazioni_agente(Id, Priorita),
+	format('Sono agente ~d e sono entrato allo stadio ', Id),
+	nl,
+	messageA(agentTornello, send_message(entrato(Id, Priorita),Me)),
+	retract(informazioni_agente),
+	retract(biglietto_comprato).
